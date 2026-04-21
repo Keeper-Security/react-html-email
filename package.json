@@ -1,7 +1,7 @@
 {
   "name": "react-html-email",
   "description": "Create elegant HTML email templates using React.",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "keywords": [
     "react",
     "html",
@@ -52,6 +52,9 @@
     "prop-types": "^15.8.1"
   },
   "jest": {
-    "testPathIgnorePatterns": ["/node_modules/", "/.claude/"]
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/.claude/"
+    ]
   }
 }
