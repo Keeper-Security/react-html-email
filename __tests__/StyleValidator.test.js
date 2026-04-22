@@ -7,14 +7,14 @@ describe('StyleValidator', () => {
 
   it('returns an error when strict and an unknown style prop is used', () => {
     const val = new StyleValidator()
-    const result = val.validate({ transform: 'scale(2)' }, '<Test>')
+    const result = val.validate({ content: 'none' }, '<Test>')
     expect(result instanceof Error).toBe(true)
-    expect(result.message).toBe('Unknown style property `transform` supplied to `<Test>`.')
+    expect(result.message).toBe('Unknown style property `content` supplied to `<Test>`.')
   })
 
   it('does not return an error when not strict and an unknown style prop is used', () => {
     const val = new StyleValidator({ strict: false })
-    const result = val.validate({ transform: 'scale(2)' }, '<Test>')
+    const result = val.validate({ content: 'none' }, '<Test>')
     expect(result).toBe(undefined)
   })
 
@@ -22,14 +22,14 @@ describe('StyleValidator', () => {
     const val = new StyleValidator()
     const result = val.validate({ listStylePosition: 'inside' }, '<Test>')
     expect(result instanceof Error).toBe(true)
-    expect(result.message).toBe('Style property `list-style-position` supplied to `<Test>` unsupported in: outlook, outlook-web.')
+    expect(result.message).toBe('Style property `list-style-position` supplied to `<Test>` unsupported in: outlook.')
   })
 
   it('does not return an error when not strict and an unsupported style prop is used', () => {
     const val = new StyleValidator({ strict: false })
     const spy = jest.spyOn(console, 'warn').mockImplementation()
-    const result = val.validate({ a: 'test', listStylePosition: 'inside', backgroundSize: '11px' }, '<Test>')
-    expect(spy).toHaveBeenCalledWith('Warning: Style property `background-size` supplied to `<Test>`, in gmail-android, yahoo-mail: image not stretched')
+    const result = val.validate({ a: 'test', listStylePosition: 'inside', fontVariant: 'small-caps' }, '<Test>')
+    expect(spy).toHaveBeenCalledWith('Warning: Style property `font-variant` supplied to `<Test>`, in yahoo-mail, outlook, outlook-legacy: partial. supports css2 values, but not css3.')
     expect(result).toBe(undefined)
   })
 
@@ -40,10 +40,10 @@ describe('StyleValidator', () => {
   })
 
   it('does not return an error on a known property, but warns with comments', () => {
-    const val = new StyleValidator({ platforms: ['gmail-android', 'yahoo-mail'] })
+    const val = new StyleValidator({ platforms: ['outlook-legacy', 'yahoo-mail'] })
     const spy = jest.spyOn(console, 'warn').mockImplementation()
-    const result = val.validate({ backgroundSize: '11px' }, '<Test>')
-    expect(spy).toHaveBeenCalledWith('Warning: Style property `background-size` supplied to `<Test>`, in gmail-android, yahoo-mail: image not stretched')
+    const result = val.validate({ fontVariant: 'small-caps' }, '<Test>')
+    expect(spy).toHaveBeenCalledWith('Warning: Style property `font-variant` supplied to `<Test>`, in outlook-legacy, yahoo-mail: partial. supports css2 values, but not css3.')
     expect(result).toBe(undefined)
   })
 
@@ -68,7 +68,7 @@ describe('StyleValidator', () => {
     const val = new StyleValidator()
     const result = val.validate({ listStylePosition: 'inside' }, '<Test>')
     expect(result instanceof Error).toBe(true)
-    expect(result.message).toBe('Style property `list-style-position` supplied to `<Test>` unsupported in: outlook, outlook-web.')
+    expect(result.message).toBe('Style property `list-style-position` supplied to `<Test>` unsupported in: outlook.')
     val.setConfig({ platforms: ['gmail'] })
     const result2 = val.validate({ listStylePosition: 'inside' }, '<Test>')
     expect(result2).toBe(undefined)

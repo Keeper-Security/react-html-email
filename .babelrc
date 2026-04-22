@@ -1,11 +1,7 @@
 {
   "presets": [
-    ["env", {
-      "targets": {
-        "node": "4.0"
-      }
-    }],
-    "react"
+    ["@babel/preset-env", { "targets": { "node": "current" } }],
+    "@babel/preset-react"
   ],
-  "plugins": ["transform-object-rest-spread"]
+  "plugins": ["@babel/plugin-proposal-object-rest-spread"]
 }
